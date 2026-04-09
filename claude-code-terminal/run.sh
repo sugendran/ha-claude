@@ -27,7 +27,22 @@ if [ ! -f /data/workspace/CLAUDE.md ]; then
   bashio::log.info "Seeded workspace CLAUDE.md"
 fi
 
-# 6. Start ttyd — HA ingress strips the path prefix before forwarding
+# 6. Claude Code Router — persist config in /data, start if configured
+mkdir -p /data/.claude-code-router
+ln -sfn /data/.claude-code-router "${HOME}/.claude-code-router"
+if [ -f "${HOME}/.claude-code-router/config.json" ]; then
+  bashio::log.info "Starting Claude Code Router..."
+  ccr start &
+  sleep 2
+  eval "$(ccr activate 2>/dev/null)" || true
+  # Write router env vars to bashrc so tmux sessions get them
+  ccr activate 2>/dev/null >> /root/.bashrc || true
+  bashio::log.info "Claude Code Router started"
+else
+  bashio::log.info "No Claude Code Router config found — skipping (create /data/.claude-code-router/config.json to enable)"
+fi
+
+# 7. Start ttyd — HA ingress strips the path prefix before forwarding
 cd /data/workspace
 exec ttyd \
   --writable \

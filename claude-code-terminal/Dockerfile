@@ -10,7 +10,12 @@ RUN apt-get update \
         curl \
         jq \
         ca-certificates \
+        nodejs \
+        npm \
     && rm -rf /var/lib/apt/lists/*
+
+# Install claude-code-router
+RUN npm install -g @musistudio/claude-code-router
 
 # Install ttyd from GitHub releases (not in Debian repos)
 ARG TTYD_VERSION=1.7.7
