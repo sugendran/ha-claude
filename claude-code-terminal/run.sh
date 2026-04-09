@@ -1,5 +1,9 @@
 #!/usr/bin/with-contenv bashio
 
+bashio::log.info "PATH: ${PATH}"
+bashio::log.info "which claude: $(which claude 2>&1 || echo 'not found')"
+bashio::log.info "ls /root/.local/bin/: $(ls /root/.local/bin/ 2>&1 || echo 'not found')"
+
 # 1. Auto-update Claude Code (best-effort)
 bashio::log.info "Checking for Claude Code updates..."
 claude update 2>/dev/null || \
