@@ -60,6 +60,7 @@ if bashio::config.has_value 'claude_model'; then
 fi
 
 # 9. Start ttyd with ingress base path
+bashio::log.info "Ingress entry: ${INGRESS_ENTRY}"
 cd /data/workspace
 exec ttyd \
   --writable \
