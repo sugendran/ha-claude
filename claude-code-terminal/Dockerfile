@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:7.8.0
+ARG BUILD_FROM=ghcr.io/home-assistant/aarch64-base-debian:bookworm
 FROM ${BUILD_FROM}
 
 # Install runtime dependencies
