@@ -1,5 +1,5 @@
 name: Claude Code Terminal
-version: 0.2.0
+version: 0.2.1
 slug: claude-code-terminal
 description: Claude Code in a web terminal via the HA sidebar
 url: https://github.com/sugendran/ha-claude
