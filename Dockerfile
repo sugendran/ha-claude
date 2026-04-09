@@ -22,6 +22,9 @@ RUN ARCH=$(uname -m) \
 # Install Claude Code native binary
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
+# Ensure Claude Code is in PATH
+ENV PATH="/root/.local/bin:${PATH}"
+
 # Copy addon files
 COPY run.sh /
 COPY templates/ /opt/templates/
