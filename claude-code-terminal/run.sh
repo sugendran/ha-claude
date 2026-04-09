@@ -6,7 +6,6 @@ API_KEY=$(bashio::config 'anthropic_api_key')
 CLAUDE_MODEL=$(bashio::config 'claude_model')
 GIT_NAME=$(bashio::config 'git_user_name')
 GIT_EMAIL=$(bashio::config 'git_user_email')
-INGRESS_ENTRY=$(bashio::addon.ingress_entry)
 
 # 2. Export auth — at least one of these must be set
 if bashio::config.has_value 'claude_oauth_token'; then
@@ -59,13 +58,11 @@ if bashio::config.has_value 'claude_model'; then
   export CLAUDE_MODEL="${CLAUDE_MODEL}"
 fi
 
-# 9. Start ttyd with ingress base path
-bashio::log.info "Ingress entry: ${INGRESS_ENTRY}"
+# 9. Start ttyd — HA ingress strips the path prefix before forwarding
 cd /data/workspace
 exec ttyd \
   --writable \
   --port 7681 \
-  --base-path "${INGRESS_ENTRY}" \
   --ping-interval 30 \
   -t rendererType=canvas \
   -t disableLeaveAlert=true \
