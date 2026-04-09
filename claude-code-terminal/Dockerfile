@@ -23,7 +23,7 @@ RUN ARCH=$(uname -m) \
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # Ensure Claude Code is in PATH
-ENV PATH="/root/.local/bin:${PATH}"
+RUN ln -sf /root/.local/bin/claude /usr/local/bin/claude
 
 # Copy addon files
 COPY run.sh /
