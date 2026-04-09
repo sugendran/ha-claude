@@ -1,0 +1,34 @@
+name: Claude Code Terminal
+version: 0.1.0
+slug: claude-code-terminal
+description: Claude Code in a web terminal via the HA sidebar
+url: https://github.com/sugendran/ha-claude
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+ingress: true
+ingress_port: 7681
+panel_icon: mdi:console
+panel_title: Claude Code
+homeassistant_api: true
+map:
+  - config:rw
+  - share:rw
+  - addon_config:rw
+init: false
+
+options:
+  claude_oauth_token: ""
+  anthropic_api_key: ""
+  claude_model: "sonnet"
+  git_user_name: ""
+  git_user_email: ""
+
+schema:
+  claude_oauth_token: str?
+  anthropic_api_key: str?
+  claude_model: list(sonnet|opus|haiku)
+  git_user_name: str?
+  git_user_email: str?
