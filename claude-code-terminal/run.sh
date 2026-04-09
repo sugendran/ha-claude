@@ -1,33 +1,33 @@
 #!/usr/bin/with-contenv bashio
 
-bashio::log.info "PATH: ${PATH}"
-bashio::log.info "which claude: $(which claude 2>&1 || echo 'not found')"
-bashio::log.info "ls /root/.local/bin/: $(ls /root/.local/bin/ 2>&1 || echo 'not found')"
+# 1. Ensure Claude Code is in PATH for all sessions
+export PATH="/root/.local/bin:${PATH}"
+echo 'export PATH="/root/.local/bin:$PATH"' > /root/.bashrc
 
-# 1. Auto-update Claude Code (best-effort)
+# 2. Auto-update Claude Code (best-effort)
 bashio::log.info "Checking for Claude Code updates..."
 claude update 2>/dev/null || \
   curl -fsSL https://claude.ai/install.sh | bash 2>/dev/null || \
   bashio::log.warning "Claude Code update failed, using existing version"
 bashio::log.info "Claude Code version: $(claude --version 2>/dev/null || echo 'unknown')"
 
-# 2. Persistent storage setup
+# 3. Persistent storage setup
 mkdir -p /data/.claude /data/workspace
 ln -sfn /data/.claude "${HOME}/.claude"
 
-# 3. First-run config — skip onboarding wizard
+# 4. First-run config — skip onboarding wizard
 if [ ! -f "${HOME}/.claude.json" ]; then
   echo '{"hasCompletedOnboarding": true}' > "${HOME}/.claude.json"
   bashio::log.info "First run — created Claude config"
 fi
 
-# 4. Seed CLAUDE.md if not present
+# 5. Seed CLAUDE.md if not present
 if [ ! -f /data/workspace/CLAUDE.md ]; then
   cp /opt/templates/CLAUDE.md /data/workspace/CLAUDE.md
   bashio::log.info "Seeded workspace CLAUDE.md"
 fi
 
-# 5. Start ttyd — HA ingress strips the path prefix before forwarding
+# 6. Start ttyd — HA ingress strips the path prefix before forwarding
 cd /data/workspace
 exec ttyd \
   --writable \
