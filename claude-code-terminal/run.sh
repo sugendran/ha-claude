@@ -32,6 +32,7 @@ bashio::log.info "Claude Code version: $(claude --version 2>/dev/null || echo 'u
 # 4. Persistent storage setup
 mkdir -p /data/.claude /data/workspace
 ln -sfn /data/.claude "${HOME}/.claude"
+cp -n /opt/templates/tmux.conf "${HOME}/.tmux.conf" 2>/dev/null || true
 
 # 5. First-run config — skip onboarding wizard
 if [ ! -f "${HOME}/.claude.json" ]; then
